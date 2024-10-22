@@ -9,7 +9,7 @@ import java.util.*;
  * A class that stores Maps of reviews and reviews with word frequency, and
  * provides review and word lookup functionality
  */
-public class ReviewManager {
+public class ReviewController {
     private Map<String, List<Review>> reviewsByHotel = new HashMap<>();
     private Map<String, TreeSet<ReviewWithFrequency>> invertedIndex = new HashMap<>();
 
@@ -25,7 +25,7 @@ public class ReviewManager {
      *
      * @param reviews list of all reviews
      */
-    public ReviewManager(List<Review> reviews){
+    public ReviewController(List<Review> reviews){
         for (Review review : reviews){
             this.reviewsByHotel.computeIfAbsent(review.getHotelId(), v -> new ArrayList<>()).add(review);
             invertedIndexReview(review);

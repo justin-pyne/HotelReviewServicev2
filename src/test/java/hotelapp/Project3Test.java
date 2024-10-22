@@ -1,6 +1,5 @@
 package hotelapp;
 
-import hotelapp.App.HotelReviewService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 

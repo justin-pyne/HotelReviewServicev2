@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HotelManager {
+public class HotelController {
     /**
      * This class serves as a helper to store the map of all hotelIds to the appropriate
      * hotel objects, and providing hotel lookup by hotelId
@@ -20,7 +20,7 @@ public class HotelManager {
      * Value: hotel object
      * @param hotels, list of all hotels
      */
-    public HotelManager(List<Hotel> hotels){
+    public HotelController(List<Hotel> hotels){
         for (Hotel hotel : hotels){
             hotelMap.put(hotel.getHotelId(), hotel);
         }
