@@ -22,6 +22,11 @@ public class ThreadSafeHotelController extends HotelController{
 
     @Override
     public String findHotel(String hotelId) {
-        return super.findHotel(hotelId);
+        try {
+            lock.readLock().lock();
+            return super.findHotel(hotelId);
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 }

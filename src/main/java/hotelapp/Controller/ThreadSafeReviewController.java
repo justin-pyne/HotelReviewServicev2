@@ -26,11 +26,21 @@ public class ThreadSafeReviewController extends ReviewController{
 
     @Override
     public String findReviews(String hotelId) {
-        return super.findReviews(hotelId);
+        try {
+            lock.readLock().lock();
+            return super.findReviews(hotelId);
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     @Override
     public String findWord(String word) {
-        return super.findWord(word);
+       try {
+           lock.readLock().lock();
+           return super.findWord(word);
+       } finally {
+          lock.readLock().unlock();
+       }
     }
 }
