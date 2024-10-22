@@ -11,6 +11,10 @@ public class HotelController {
 
 
     public HotelController(List<Hotel> hotels) {
+        initialize(hotels);
+    }
+
+    protected void initialize(List<Hotel> hotels) {
         for (Hotel hotel : hotels) {
             hotelMap.put(hotel.getHotelId(), hotel);
         }

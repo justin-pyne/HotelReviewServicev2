@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ThreadSafeReviewController extends ReviewController{
-    private ReentrantReadWriteLock lock;
+    private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     /**
      * Constructor for review manager, converts list of reviews to
      * Map of reviewsByHotel:
@@ -21,7 +21,16 @@ public class ThreadSafeReviewController extends ReviewController{
      */
     public ThreadSafeReviewController(List<Review> reviews) {
         super(reviews);
-        lock = new ReentrantReadWriteLock();
+    }
+
+    @Override
+    protected void initialize(List<Review> reviews) {
+        lock.writeLock().lock();
+        try {
+            super.initialize(reviews);
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     @Override

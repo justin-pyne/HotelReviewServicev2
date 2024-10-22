@@ -17,7 +17,16 @@ public class ThreadSafeHotelController extends HotelController{
      */
     public ThreadSafeHotelController(List<Hotel> hotels) {
         super(hotels);
-        lock = new ReentrantReadWriteLock();
+    }
+
+    @Override
+    protected void initialize(List<Hotel> hotels) {
+        lock.writeLock().lock();
+        try {
+            super.initialize(hotels);
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     @Override

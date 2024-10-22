@@ -11,6 +11,10 @@ public class ReviewController {
 
 
     public ReviewController(List<Review> reviews) {
+        initialize(reviews);
+    }
+
+    protected void initialize(List<Review> reviews) {
         for (Review review : reviews) {
             if (!reviewMap.containsKey(review.getHotelId())) {
                 reviewMap.put(review.getHotelId(), new ArrayList<>());
