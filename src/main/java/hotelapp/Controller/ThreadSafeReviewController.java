@@ -3,8 +3,10 @@ package hotelapp.Controller;
 import hotelapp.Model.Review;
 
 import java.util.List;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ThreadSafeReviewController extends ReviewController{
+    private ReentrantReadWriteLock lock;
     /**
      * Constructor for review manager, converts list of reviews to
      * Map of reviewsByHotel:
@@ -19,5 +21,16 @@ public class ThreadSafeReviewController extends ReviewController{
      */
     public ThreadSafeReviewController(List<Review> reviews) {
         super(reviews);
+        lock = new ReentrantReadWriteLock();
+    }
+
+    @Override
+    public String findReviews(String hotelId) {
+        return super.findReviews(hotelId);
+    }
+
+    @Override
+    public String findWord(String word) {
+        return super.findWord(word);
     }
 }

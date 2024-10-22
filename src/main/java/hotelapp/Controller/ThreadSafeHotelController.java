@@ -3,8 +3,11 @@ package hotelapp.Controller;
 import hotelapp.Model.Hotel;
 
 import java.util.List;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ThreadSafeHotelController extends HotelController{
+    private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+
     /**
      * Constructor for HotelManager, which takes a list of hotels and converts it to a map
      * Key: hotelId
@@ -14,5 +17,11 @@ public class ThreadSafeHotelController extends HotelController{
      */
     public ThreadSafeHotelController(List<Hotel> hotels) {
         super(hotels);
+        lock = new ReentrantReadWriteLock();
+    }
+
+    @Override
+    public String findHotel(String hotelId) {
+        return super.findHotel(hotelId);
     }
 }
