@@ -1,4 +1,4 @@
-package hotelapp;
+package hotelapp.Model;
 
 /**
  * Custom exception class for entering invalid hotel rating

@@ -1,4 +1,4 @@
-package hotelapp;
+package hotelapp.Model;
 
 import com.google.gson.annotations.SerializedName;
 

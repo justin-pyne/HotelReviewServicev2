@@ -1,4 +1,4 @@
-package hotelapp;
+package hotelapp.Model;
 
 public class ReviewWithFrequency implements Comparable<ReviewWithFrequency>{
     private final Review review;

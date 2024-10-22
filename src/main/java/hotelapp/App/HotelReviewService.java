@@ -1,4 +1,4 @@
-package hotelapp;
+package hotelapp.App;
 
 /** The driver class for project 3.
  * The main function should be able to take the following command line arguments

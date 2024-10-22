@@ -1,4 +1,7 @@
-package hotelapp;
+package hotelapp.Controller;
+
+import hotelapp.Model.Review;
+import hotelapp.Model.ReviewWithFrequency;
 
 import java.util.*;
 

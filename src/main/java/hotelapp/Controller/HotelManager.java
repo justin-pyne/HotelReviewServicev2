@@ -1,4 +1,6 @@
-package hotelapp;
+package hotelapp.Controller;
+
+import hotelapp.Model.Hotel;
 
 import java.util.HashMap;
 import java.util.List;
