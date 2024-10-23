@@ -21,7 +21,7 @@ public class JsonService {
     private Phaser phaser = new Phaser();
     private String output;
 
-    public JsonService(String output) {
+    public JsonService(int numThreads, String output) {
         this.output = output;
     }
 
@@ -56,7 +56,7 @@ public class JsonService {
         return hotels;
     }
 
-    public List<Review> parseReviews(String filePath, int numThreads) {
+    public List<Review> parseReviews(String filePath) {
 
     }
 

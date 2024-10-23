@@ -57,14 +57,14 @@ public class HotelReviewService {
                 return;
             }
         }
-        JsonService js = new JsonService(argsMap.get("-output"));
+        JsonService js = new JsonService(Integer.getInteger(argsMap.get("-threads")), argsMap.get("-output"));
         if (argsMap.containsKey("-hotels")){
             List<Hotel> hotels = js.parseHotel(argsMap.get("-hotels"));
             this.hotelController = new HotelController(hotels);
         }
 
         if (argsMap.containsKey("-reviews")){
-            List<Review> reviews = js.parseReviews(argsMap.get("-reviews"), Integer.getInteger(argsMap.get("-threads")));
+            List<Review> reviews = js.parseReviews(argsMap.get("-reviews"));
             this.reviewController = new ThreadSafeReviewController(reviews);
         }
     }
