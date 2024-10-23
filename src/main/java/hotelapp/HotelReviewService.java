@@ -23,7 +23,7 @@ import java.util.Map;
  * and take instructor's / TA's feedback from a code review of project 1 into account.
  */
 public class HotelReviewService {
-    private ThreadSafeReviewController reviewController;
+    private ThreadSafeReviewController reviewController = new ThreadSafeReviewController();
     private HotelController hotelController;
     /**
      * Parse given arguments that contain paths to the hotel file and the reviews folder,
@@ -57,15 +57,14 @@ public class HotelReviewService {
                 return;
             }
         }
-        JsonService js = new JsonService(Integer.getInteger(argsMap.get("-threads")), argsMap.get("-output"));
+        JsonService js = new JsonService(Integer.getInteger(argsMap.get("-threads")), argsMap.get("-output"), reviewController);
         if (argsMap.containsKey("-hotels")){
             List<Hotel> hotels = js.parseHotel(argsMap.get("-hotels"));
             this.hotelController = new HotelController(hotels);
         }
 
         if (argsMap.containsKey("-reviews")){
-            List<Review> reviews = js.parseReviews(argsMap.get("-reviews"));
-            this.reviewController = new ThreadSafeReviewController(reviews);
+            js.parseReviews(argsMap.get("-reviews"));
         }
     }
 

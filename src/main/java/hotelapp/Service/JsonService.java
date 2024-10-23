@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import hotelapp.Controller.ThreadSafeReviewController;
 import hotelapp.Model.Hotel;
 import hotelapp.Model.Review;
 
@@ -23,21 +24,25 @@ public class JsonService {
     private Phaser phaser = new Phaser();
     private String output;
     private JsonParser parser = new JsonParser();
+    private ThreadSafeReviewController reviewController;
 
-    public JsonService(int numThreads, String output) {
+    public JsonService(int numThreads, String output, ThreadSafeReviewController reviewController) {
         this.output = output;
         this.poolManager = Executors.newFixedThreadPool(numThreads);
+        this.reviewController = reviewController;
     }
 
     class ReviewWorker implements Runnable {
         private File file;
-        private List<Review> localReviews = new ArrayList<>();
-        public ReviewWorker(File file, List<Review> reviews) {
+
+        public ReviewWorker(File file) {
             this.file = file;
         }
 
         @Override
         public void run() {
+            List<Review> localReviews = new ArrayList<>();
+
             try(BufferedReader br = new BufferedReader(new FileReader(file))) {
                 JsonObject obj = (JsonObject)parser.parse(br);
                 JsonObject reviewDetails = obj.getAsJsonObject("reviewDetails");
@@ -58,7 +63,7 @@ public class JsonService {
                     Review review = new Review(hotelId, reviewId, rating, title, reviewText, userNickname, date);
                     localReviews.add(review);
                 }
-                addReviews(reviews);
+                reviewController.addReviews(localReviews);
             } catch(IOException e) {
                 System.out.println(e);
             } finally {
@@ -67,9 +72,6 @@ public class JsonService {
         }
     }
 
-    private synchronized void addReviews(List<Review> reviews, List<Review> localReviews) {
-        reviews.addAll(localReviews);
-    }
 
 
     public List<Hotel> parseHotel(String filePath) {
@@ -95,31 +97,26 @@ public class JsonService {
                 Hotel hotel = new Hotel(name, id, lat, lon, ad, city);
                 hotels.add(hotel);
             }
-
-
         } catch (IOException e) {
             System.out.println(e);
         }
         return hotels;
     }
 
-    public List<Review> parseReviews(String filePath) {
-        List<Review> reviews = new ArrayList<>();
-
-        traverseReviewDirectory(filePath, reviews);
-
-        return reviews;
+    public void parseReviews(String filePath) {
+        traverseReviewDirectory(filePath);
+        waitToFinish();
     }
 
-    private void traverseReviewDirectory(String filePath, List<Review> reviews) {
+    private void traverseReviewDirectory(String filePath) {
         Path p = Paths.get(filePath);
         try(DirectoryStream<Path> pathsInDir = Files.newDirectoryStream(p)) {
             for(Path path : pathsInDir) {
                 if(Files.isDirectory(path)) {
-                    traverseReviewDirectory(path.toString(), reviews);
+                    traverseReviewDirectory(path.toString());
                 } else if (path.toString().endsWith(".json")) {
-                    poolManager.submit(new ReviewWorker(path.toFile(), reviews));
                     phaser.register();
+                    poolManager.submit(new ReviewWorker(path.toFile()));
                 }
             }
         } catch(IOException e) {
@@ -127,4 +124,8 @@ public class JsonService {
         }
     }
 
+    private void waitToFinish() {
+        phaser.awaitAdvance(phaser.getPhase());
+        poolManager.shutdown();
+    }
 }
