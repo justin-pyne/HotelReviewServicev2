@@ -2,6 +2,7 @@ package hotelapp.Controller;
 
 import hotelapp.Model.Review;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -19,15 +20,17 @@ public class ThreadSafeReviewController extends ReviewController{
      *
      * @param reviews list of all reviews
      */
+    public ThreadSafeReviewController() {}
+
     public ThreadSafeReviewController(List<Review> reviews) {
         super(reviews);
     }
 
     @Override
-    protected void initialize(List<Review> reviews) {
+    public void addReviews(List<Review> newReviews) {
         lock.writeLock().lock();
         try {
-            super.initialize(reviews);
+            super.addReviews(new ArrayList<>(newReviews));
         } finally {
             lock.writeLock().unlock();
         }

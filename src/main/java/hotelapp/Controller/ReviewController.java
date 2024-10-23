@@ -10,12 +10,15 @@ public class ReviewController {
     private Map<String, TreeSet<ReviewWithFrequency>> invertedIndex = new HashMap<>();
 
 
+    public ReviewController() {}
+
     public ReviewController(List<Review> reviews) {
-        initialize(reviews);
+        addReviews(reviews);
     }
 
-    protected void initialize(List<Review> reviews) {
-        for (Review review : reviews) {
+
+    public void addReviews(List<Review> newReviews) {
+        for (Review review : newReviews) {
             if (!reviewMap.containsKey(review.getHotelId())) {
                 reviewMap.put(review.getHotelId(), new ArrayList<>());
             }
