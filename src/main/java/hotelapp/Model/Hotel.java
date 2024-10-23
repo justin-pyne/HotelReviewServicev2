@@ -1,6 +1,6 @@
 package hotelapp.Model;
 
-public class Hotel {
+public class Hotel implements Comparable<Hotel>{
 
     private final String name;
     private final String hotelId;
@@ -30,5 +30,10 @@ public class Hotel {
                 "latitude = " + latitude + System.lineSeparator() +
                 "longitude = " + longitude + System.lineSeparator() +
                 "address = " + address + ", " + city + System.lineSeparator();
+    }
+
+    @Override
+    public int compareTo(Hotel o) {
+        return this.hotelId.compareTo(o.hotelId);
     }
 }

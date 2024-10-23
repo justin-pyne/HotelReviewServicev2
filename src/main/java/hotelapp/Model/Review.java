@@ -2,7 +2,7 @@ package hotelapp.Model;
 
 import java.time.LocalDate;
 
-public class Review {
+public class Review implements Comparable<Review>{
     private final String hotelId;
     private final String reviewId;
     private final double rating;
@@ -47,5 +47,14 @@ public class Review {
                 "userNickname = " + userName + System.lineSeparator() +
                 "submissionDate = " + date + System.lineSeparator() +
                 "--------------------" + System.lineSeparator();
+    }
+
+    @Override
+    public int compareTo(Review o) {
+        int comp = this.date.compareTo(o.date);
+        if(comp == 0) {
+            return this.reviewId.compareTo(o.reviewId);
+        }
+        return comp;
     }
 }
