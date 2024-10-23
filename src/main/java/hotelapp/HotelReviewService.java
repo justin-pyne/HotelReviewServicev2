@@ -1,5 +1,15 @@
 package hotelapp;
 
+import hotelapp.Controller.HotelController;
+import hotelapp.Controller.ThreadSafeReviewController;
+import hotelapp.Model.Hotel;
+import hotelapp.Model.Review;
+import hotelapp.Service.JsonService;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /** The driver class for project 3.
  * The main function should be able to take the following command line arguments
  * -hotels hotelFile -reviews reviewsDirectory -threads numThreads -output filepath
@@ -13,8 +23,8 @@ package hotelapp;
  * and take instructor's / TA's feedback from a code review of project 1 into account.
  */
 public class HotelReviewService {
-    // FILL IN CODE: add instance data as needed
-
+    private ThreadSafeReviewController reviewController;
+    private HotelController hotelController;
     /**
      * Parse given arguments that contain paths to the hotel file and the reviews folder,
      * and load hotel and review data into the corresponding data structures.
@@ -26,11 +36,37 @@ public class HotelReviewService {
      *   or in a different order.
      */
     public void loadData(String[] args) {
-        // FILL IN CODE:
-        // load info into thread safe data structures
-        // use a single thread to load hotels
-        // use multithreading to load reviews (using ExecutorService, Phaser etc).
+        Map<String, String> argsMap = new HashMap<>();
 
+        if (args.length == 0) {
+            System.out.println("Missing arguments.");
+            return;
+        }
+
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].startsWith("-")) {
+                if (i + 1 < args.length && !args[i + 1].startsWith("-")) {
+                    argsMap.put(args[i], args[i + 1]);
+                    i++;
+                } else {
+                    System.out.println("Unexpected or missing value for flag:" + args[i]);
+                    return;
+                }
+            } else {
+                System.out.println("Unexpected argument: " + args[i]);
+                return;
+            }
+        }
+        JsonService js = new JsonService(argsMap.get("-output"));
+        if (argsMap.containsKey("-hotels")){
+            List<Hotel> hotels = js.parseHotel(argsMap.get("-hotels"));
+            this.hotelController = new HotelController(hotels);
+        }
+
+        if (argsMap.containsKey("-reviews")){
+            List<Review> reviews = js.parseReviews(argsMap.get("-reviews"), Integer.getInteger(argsMap.get("-threads")));
+            this.reviewController = new ThreadSafeReviewController(reviews);
+        }
     }
 
     /**
