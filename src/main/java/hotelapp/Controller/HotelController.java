@@ -2,6 +2,7 @@ package hotelapp.Controller;
 
 import hotelapp.Model.Hotel;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -21,5 +22,9 @@ public class HotelController {
             throw new IllegalArgumentException();
         }
         return hotelMap.get(hotelId).toString();
+    }
+
+    public Collection<Hotel> getHotels() {
+        return hotelMap.values();
     }
 }
