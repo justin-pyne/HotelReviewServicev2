@@ -3,7 +3,6 @@ package hotelapp;
 import hotelapp.Controller.HotelController;
 import hotelapp.Controller.ThreadSafeReviewController;
 import hotelapp.Model.Hotel;
-import hotelapp.Model.Review;
 import hotelapp.Service.JsonService;
 
 import java.util.HashMap;
@@ -57,7 +56,8 @@ public class HotelReviewService {
                 return;
             }
         }
-        JsonService js = new JsonService(Integer.getInteger(argsMap.get("-threads")), argsMap.get("-output"), reviewController);
+        int numThreads = Integer.getInteger(argsMap.getOrDefault("-threads", "5"));
+        JsonService js = new JsonService(numThreads, argsMap.get("-output"), reviewController);
         if (argsMap.containsKey("-hotels")){
             List<Hotel> hotels = js.parseHotel(argsMap.get("-hotels"));
             this.hotelController = new HotelController(hotels);
@@ -77,9 +77,18 @@ public class HotelReviewService {
      * @return String, the result of the query
      */
     public String processQuery(String query) {
-        // FILL IN CODE:
+        String[] queries = query.split(" ", 2);
+        String method = queries[0];
 
-        return "";
+        if (method.equals("findHotel") && queries.length == 2){
+            return hotelController.findHotel(queries[1]);
+        } else if (method.equals("findReviews") && queries.length == 2){
+            return reviewController.findReviews(queries[1]);
+        } else if (method.equals("findWord") && queries.length == 2){
+            return reviewController.findWord(queries[1]);
+        }
+
+        throw new IllegalArgumentException();
     }
 
     public static void main(String[] args) {
