@@ -29,7 +29,7 @@ public class ReviewController {
 
     public String findReviews(String hotelId){
         if (!reviewMap.containsKey(hotelId)) {
-            throw new IllegalArgumentException();
+            return null;
         }
 
         List<Review> reviews = reviewMap.get(hotelId);
