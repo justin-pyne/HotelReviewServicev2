@@ -4,6 +4,7 @@ import hotelapp.Controller.HotelController;
 import hotelapp.Controller.ThreadSafeReviewController;
 import hotelapp.Model.Hotel;
 import hotelapp.Service.JsonService;
+import hotelapp.Service.OutputService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,8 +57,8 @@ public class HotelReviewService {
                 return;
             }
         }
-        int numThreads = Integer.getInteger(argsMap.getOrDefault("-threads", "5"));
-        JsonService js = new JsonService(numThreads, argsMap.get("-output"), reviewController);
+        int numThreads = Integer.parseInt(argsMap.getOrDefault("-threads", "5"));
+        JsonService js = new JsonService(numThreads, reviewController);
         if (argsMap.containsKey("-hotels")){
             List<Hotel> hotels = js.parseHotel(argsMap.get("-hotels"));
             this.hotelController = new HotelController(hotels);
@@ -65,6 +66,11 @@ public class HotelReviewService {
 
         if (argsMap.containsKey("-reviews")){
             js.parseReviews(argsMap.get("-reviews"));
+        }
+
+        if (argsMap.containsKey("-output")){
+            OutputService outputService = new OutputService();
+            outputService.writeToFile(argsMap.get("-output"), hotelController, reviewController);
         }
     }
 
