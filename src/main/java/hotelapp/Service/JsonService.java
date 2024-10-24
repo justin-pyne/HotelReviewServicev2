@@ -22,12 +22,10 @@ import java.util.concurrent.Phaser;
 public class JsonService {
     private ExecutorService poolManager;
     private Phaser phaser = new Phaser();
-    private String output;
     private JsonParser parser = new JsonParser();
     private ThreadSafeReviewController reviewController;
 
-    public JsonService(int numThreads, String output, ThreadSafeReviewController reviewController) {
-        this.output = output;
+    public JsonService(int numThreads, ThreadSafeReviewController reviewController) {
         this.poolManager = Executors.newFixedThreadPool(numThreads);
         this.reviewController = reviewController;
     }
@@ -59,6 +57,9 @@ public class JsonService {
                     String title = reviewObj.get("title").getAsString();
                     String reviewText = reviewObj.get("reviewText").getAsString();
                     String date = reviewObj.get("reviewSubmissionDate").getAsString();
+                    if (userNickname.equals("")) {
+                        userNickname = "Anonymous";
+                    }
 
                     Review review = new Review(hotelId, reviewId, rating, title, reviewText, userNickname, date);
                     localReviews.add(review);
@@ -89,12 +90,13 @@ public class JsonService {
                 String id = hotelObj.get("id").getAsString();
                 String ad = hotelObj.get("ad").getAsString();
                 String city = hotelObj.get("ci").getAsString();
+                String state = hotelObj.get("pr").getAsString();
 
                 JsonObject ll = hotelObj.getAsJsonObject("ll");
                 String lat = ll.get("lat").getAsString();
                 String lon = ll.get("lng").getAsString();
 
-                Hotel hotel = new Hotel(name, id, lat, lon, ad, city);
+                Hotel hotel = new Hotel(name, id, lat, lon, ad, city, state);
                 hotels.add(hotel);
             }
         } catch (IOException e) {
@@ -115,8 +117,8 @@ public class JsonService {
                 if(Files.isDirectory(path)) {
                     traverseReviewDirectory(path.toString());
                 } else if (path.toString().endsWith(".json")) {
-                    phaser.register();
                     poolManager.submit(new ReviewWorker(path.toFile()));
+                    phaser.register();
                 }
             }
         } catch(IOException e) {
