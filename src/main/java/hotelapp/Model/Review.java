@@ -19,6 +19,7 @@ public class Review implements Comparable<Review>{
         this.reviewText = reviewText;
         this.userName = userName;
         this.date = LocalDate.parse(date);
+
     }
 
     public String getHotelId() {
@@ -39,14 +40,22 @@ public class Review implements Comparable<Review>{
 
     @Override
     public String toString() {
-        return "hotelId = " + hotelId + System.lineSeparator() +
-                "reviewId = " + reviewId + System.lineSeparator() +
-                "averageRating = " + rating + System.lineSeparator() +
-                "title = " + reviewTitle + System.lineSeparator() +
-                "reviewText = " + reviewText + System.lineSeparator() +
-                "userNickname = " + userName + System.lineSeparator() +
-                "submissionDate = " + date + System.lineSeparator() +
-                "--------------------" + System.lineSeparator();
+        return "--------------------" + System.lineSeparator() +
+                "Review by " + userName + " on " + date + System.lineSeparator() +
+                "Rating: " + Math.round(rating) + System.lineSeparator() +
+                "ReviewId: " + reviewId + System.lineSeparator() +
+                reviewTitle + System.lineSeparator() +
+                reviewText + System.lineSeparator();
+
+
+//        + hotelId + System.lineSeparator() +
+//                "reviewId = " + reviewId + System.lineSeparator() +
+//                "averageRating = " + rating + System.lineSeparator() +
+//                "title = " + reviewTitle + System.lineSeparator() +
+//                "reviewText = " + reviewText + System.lineSeparator() +
+//                "userNickname = " + userName + System.lineSeparator() +
+//                "submissionDate = " + date + System.lineSeparator() +
+//                "--------------------" + System.lineSeparator();
     }
 
     @Override

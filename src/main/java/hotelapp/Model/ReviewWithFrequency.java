@@ -38,6 +38,12 @@ public class ReviewWithFrequency implements Comparable<ReviewWithFrequency> {
 
     @Override
     public String toString() {
-        return frequency + System.lineSeparator() + review.toString();
+        String content = review.toString();
+        content = content.replaceFirst("--------------------" + System.lineSeparator(), "");
+
+
+        return "--------------------" + System.lineSeparator() +
+                frequency + System.lineSeparator() +
+                content;
     }
 }
