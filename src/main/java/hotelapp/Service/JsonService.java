@@ -7,6 +7,8 @@ import com.google.gson.JsonParser;
 import hotelapp.Controller.ThreadSafeReviewController;
 import hotelapp.Model.Hotel;
 import hotelapp.Model.Review;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.nio.file.DirectoryStream;
@@ -24,6 +26,7 @@ public class JsonService {
     private Phaser phaser = new Phaser();
     private JsonParser parser = new JsonParser();
     private ThreadSafeReviewController reviewController;
+    private Logger logger = LogManager.getLogger();
 
     public JsonService(int numThreads, ThreadSafeReviewController reviewController) {
         this.poolManager = Executors.newFixedThreadPool(numThreads);
@@ -65,6 +68,8 @@ public class JsonService {
                     localReviews.add(review);
                 }
                 reviewController.addReviews(localReviews);
+                logger.debug("Worker finished working and added reviews to controller.");
+
             } catch(IOException e) {
                 System.out.println(e);
             } finally {
@@ -108,6 +113,7 @@ public class JsonService {
     public void parseReviews(String filePath) {
         traverseReviewDirectory(filePath);
         waitToFinish();
+        logger.debug("Finished parsing reviews");
     }
 
     private void traverseReviewDirectory(String filePath) {
@@ -119,15 +125,17 @@ public class JsonService {
                 } else if (path.toString().endsWith(".json")) {
                     poolManager.submit(new ReviewWorker(path.toFile()));
                     phaser.register();
+                    logger.debug("Created a worker for " + path);
                 }
             }
         } catch(IOException e) {
-            System.out.println(e);
+            logger.error("IOException: not able to open the directory " + p);
         }
     }
 
     private void waitToFinish() {
         phaser.awaitAdvance(phaser.getPhase());
         poolManager.shutdown();
+        logger.debug("Shut down the pool");
     }
 }
