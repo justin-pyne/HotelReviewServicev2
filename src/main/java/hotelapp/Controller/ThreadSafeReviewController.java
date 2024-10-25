@@ -6,26 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+/**
+ * A thread safe version of the ReviewController
+ */
 public class ThreadSafeReviewController extends ReviewController{
     private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-    /**
-     * Constructor for review manager, converts list of reviews to
-     * Map of reviewsByHotel:
-     * Key : hotelId
-     * Value : List of reviews for that hotel
-     * &
-     * Map of reviewsByFrequency (invertedIndex):
-     * Key: Word
-     * Value: Sorted treeset of reviews by frequency of word
-     *
-     * @param reviews list of all reviews
-     */
+
     public ThreadSafeReviewController() {}
 
-    public ThreadSafeReviewController(List<Review> reviews) {
-        super(reviews);
-    }
-
+    /**
+     * Thread safe override for addReviews, add a List of Reviews to reviewMap
+     * @param newReviews A list of Review objects to be added
+     */
     @Override
     public void addReviews(List<Review> newReviews) {
         lock.writeLock().lock();
@@ -36,6 +28,11 @@ public class ThreadSafeReviewController extends ReviewController{
         }
     }
 
+    /**
+     * Thread safe override for findReviews, looks up reviews for a Hotel by hotelId
+     * @param hotelId the desired hotelId to fetch the Reviews for
+     * @return A String representation of all Reviews for the desired Hotel
+     */
     @Override
     public String findReviews(String hotelId) {
         try {
@@ -46,6 +43,11 @@ public class ThreadSafeReviewController extends ReviewController{
         }
     }
 
+    /**
+     * Thread safe override for findWord, looks up frequency of a word in all Reviews.
+     * @param word the word to look up in the Reviews
+     * @return A String representation of all Reviews and the frequency for the desired word
+     */
     @Override
     public String findWord(String word) {
        try {

@@ -1,5 +1,9 @@
 package hotelapp.Model;
 
+
+/**
+ * A model class representing a Hotel
+ */
 public class Hotel implements Comparable<Hotel>{
 
     private final String name;
@@ -21,10 +25,29 @@ public class Hotel implements Comparable<Hotel>{
         this.state = state;
     }
 
+    /**
+     * Getter for hotelId
+     * @return hotelId String
+     */
     public String getHotelId() {
         return hotelId;
     }
 
+
+    /**
+     * Comparable compareTo implementation
+     * @param o the object to be compared.
+     * @return an int for the comparison
+     */
+    @Override
+    public int compareTo(Hotel o) {
+        return this.hotelId.compareTo(o.hotelId);
+    }
+
+    /**
+     * A toString override
+     * @return A String representation of this Hotel
+     */
     @Override
     public String toString() {
         return  name + ": " + hotelId + System.lineSeparator() +
@@ -32,8 +55,4 @@ public class Hotel implements Comparable<Hotel>{
                 city + ", " + state;
     }
 
-    @Override
-    public int compareTo(Hotel o) {
-        return this.hotelId.compareTo(o.hotelId);
-    }
 }

@@ -21,6 +21,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Phaser;
 
+
+/**
+ * A class for parsing JSON input of Hotels and Reviews, and creating the appropriate Hotel and Review objects
+ */
 public class JsonService {
     private ExecutorService poolManager;
     private Phaser phaser = new Phaser();
@@ -33,6 +37,10 @@ public class JsonService {
         this.reviewController = reviewController;
     }
 
+    /**
+     * A ReviewWorker class that parses a JSON file of reviews and creates the appropriate Review/ReviewWithFrequency objects
+     * and adds them to the appropriate maps.
+     */
     class ReviewWorker implements Runnable {
         private File file;
 
@@ -40,6 +48,10 @@ public class JsonService {
             this.file = file;
         }
 
+        /**
+         * Override for run in Runnable, parses the file of this Worker
+         * and creates Review/ReviewWith frequency objects then adds to appropriate maps
+         */
         @Override
         public void run() {
             List<Review> localReviews = new ArrayList<>();
@@ -79,7 +91,12 @@ public class JsonService {
     }
 
 
-
+    /**
+     * Parses a JSON file of Hotels, creates the appropriate hotel objects
+     * and adds to a hotelMap in the HotelController
+     * @param filePath filePath to the Hotel JSON file
+     * @return List of Hotel objects from the JSON file
+     */
     public List<Hotel> parseHotel(String filePath) {
         List<Hotel> hotels = new ArrayList<>();
 
@@ -110,12 +127,21 @@ public class JsonService {
         return hotels;
     }
 
+    /**
+     * Parses a directory and all nested directory for review JSON files, and creates appropriate objects.
+     * @param filePath
+     */
     public void parseReviews(String filePath) {
         traverseReviewDirectory(filePath);
         waitToFinish();
         logger.debug("Finished parsing reviews");
     }
 
+    /**
+     * Private helper to recursively traverse directories for review JSON files.
+     * Creates a ReviewWorker to handle any JSON files found.
+     * @param filePath directory to search for JSON files
+     */
     private void traverseReviewDirectory(String filePath) {
         Path p = Paths.get(filePath);
         try(DirectoryStream<Path> pathsInDir = Files.newDirectoryStream(p)) {
@@ -133,6 +159,9 @@ public class JsonService {
         }
     }
 
+    /**
+     * Private helper to wait for threads to finish and shutdown the thread pool
+     */
     private void waitToFinish() {
         phaser.awaitAdvance(phaser.getPhase());
         poolManager.shutdown();

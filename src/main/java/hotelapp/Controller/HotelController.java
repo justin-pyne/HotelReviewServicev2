@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+
+/**
+ * A class that stores a Map of Hotel objects, and provides methods to look up Hotels.
+ */
 public class HotelController {
     private Map<String, Hotel> hotelMap = new TreeMap<>();
 
@@ -17,6 +21,11 @@ public class HotelController {
         }
     }
 
+    /**
+     * A method to look up a Hotel object by ID
+     * @param hotelId the hotelId to look up
+     * @return the Hotel object with the provided hotelId
+     */
     public String findHotel(String hotelId){
         if(!hotelMap.containsKey(hotelId)) {
             throw new IllegalArgumentException();
@@ -24,6 +33,10 @@ public class HotelController {
         return hotelMap.get(hotelId).toString();
     }
 
+    /**
+     * A method to get all the Hotels stored in the map
+     * @return A Collection of Hotels from the map
+     */
     public Collection<Hotel> getHotels() {
         return hotelMap.values();
     }

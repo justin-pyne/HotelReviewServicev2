@@ -5,6 +5,10 @@ import hotelapp.Model.ReviewWithFrequency;
 
 import java.util.*;
 
+
+/**
+ * A class that stores a reviewMap linking Reviews to Hotels, and an invertexIndex for word lookup in Reviews.
+ */
 public class ReviewController {
     private Map<String, List<Review>> reviewMap = new TreeMap<>();
     private Map<String, TreeSet<ReviewWithFrequency>> invertedIndex = new HashMap<>();
@@ -12,11 +16,10 @@ public class ReviewController {
 
     public ReviewController() {}
 
-    public ReviewController(List<Review> reviews) {
-        addReviews(reviews);
-    }
-
-
+    /**
+     * Adds reviews to the reviewMap
+     * @param newReviews A list of Review objects to be added
+     */
     public void addReviews(List<Review> newReviews) {
         for (Review review : newReviews) {
             if (!reviewMap.containsKey(review.getHotelId())) {
@@ -27,6 +30,11 @@ public class ReviewController {
         }
     }
 
+    /**
+     * Looks up all Reviews for a Hotel by hotelId
+     * @param hotelId the desired hotelId to fetch the Reviews for
+     * @return A String with all Reviews for the provided Hotel
+     */
     public String findReviews(String hotelId){
         if (!reviewMap.containsKey(hotelId)) {
             return null;
@@ -50,6 +58,11 @@ public class ReviewController {
         return result.toString();
     }
 
+    /**
+     * Looks up all Reviews with the provided word, sorted in descending order.
+     * @param word the word to look up in the Reviews
+     * @return String representation of all the Reviews containing the word, and the frequency of the word
+     */
     public String findWord(String word){
         word = word.toLowerCase();
         if (!invertedIndex.containsKey(word)) {
@@ -62,6 +75,10 @@ public class ReviewController {
         return result.toString();
     }
 
+    /**
+     * Private helper to add the words in a Review to the invertedIndex map
+     * @param review The desired review to be processed to the invertedIndex
+     */
     private void invertedIndexReview(Review review) {
         String[] words = review.getReviewText().toLowerCase().split("[,;!\\. ]");
 
