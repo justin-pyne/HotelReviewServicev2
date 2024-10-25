@@ -148,8 +148,8 @@ public class JsonService {
                 if(Files.isDirectory(path)) {
                     traverseReviewDirectory(path.toString());
                 } else if (path.toString().endsWith(".json")) {
-                    poolManager.submit(new ReviewWorker(path.toFile()));
                     phaser.register();
+                    poolManager.submit(new ReviewWorker(path.toFile()));
                     logger.debug("Created a worker for " + path);
                 }
             }
