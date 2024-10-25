@@ -40,13 +40,14 @@ public class Review implements Comparable<Review>{
 
     @Override
     public String toString() {
-        return "--------------------" + System.lineSeparator() +
-                "Review by " + userName + " on " + date + System.lineSeparator() +
-                "Rating: " + Math.round(rating) + System.lineSeparator() +
-                "ReviewId: " + reviewId + System.lineSeparator() +
-                reviewTitle + System.lineSeparator() +
-                reviewText + System.lineSeparator();
-
+        StringBuilder sb = new StringBuilder();
+         sb.append("--------------------").append(System.lineSeparator());
+         sb.append("Review by ").append(userName).append(" on ").append(date).append(System.lineSeparator());
+         sb.append("Rating: ").append(Math.round(rating)).append(System.lineSeparator());
+         sb.append("ReviewId: ").append(reviewId).append(System.lineSeparator());
+         sb.append(reviewTitle).append(System.lineSeparator());
+         sb.append(reviewText).append(System.lineSeparator());
+         return sb.toString();
 
 //        + hotelId + System.lineSeparator() +
 //                "reviewId = " + reviewId + System.lineSeparator() +

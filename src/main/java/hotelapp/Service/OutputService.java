@@ -16,8 +16,8 @@ public class OutputService {
                 pw.println("********************");
                 pw.println(hotel.toString());
                 String reviewOutput = reviewController.findReviews(hotel.getHotelId());
-                if (reviewOutput != null) {
-                    pw.println(reviewOutput);
+                if (reviewOutput != null && !reviewOutput.isEmpty()) {
+                    pw.print(reviewOutput);
                 }
             }
         } catch(IOException e) {
