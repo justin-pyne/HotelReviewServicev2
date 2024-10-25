@@ -90,7 +90,6 @@ public class JsonService {
         }
     }
 
-
     /**
      * Parses a JSON file of Hotels, creates the appropriate hotel objects
      * and adds to a hotelMap in the HotelController

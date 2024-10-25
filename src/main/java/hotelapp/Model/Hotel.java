@@ -33,7 +33,6 @@ public class Hotel implements Comparable<Hotel>{
         return hotelId;
     }
 
-
     /**
      * Comparable compareTo implementation
      * @param o the object to be compared.

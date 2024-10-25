@@ -14,7 +14,6 @@ import java.util.TreeMap;
 public class HotelController {
     private Map<String, Hotel> hotelMap = new TreeMap<>();
 
-
     public HotelController(List<Hotel> hotels) {
         for (Hotel hotel : hotels) {
             hotelMap.put(hotel.getHotelId(), hotel);

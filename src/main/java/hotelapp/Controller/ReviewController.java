@@ -13,7 +13,6 @@ public class ReviewController {
     private Map<String, List<Review>> reviewMap = new TreeMap<>();
     private Map<String, TreeSet<ReviewWithFrequency>> invertedIndex = new HashMap<>();
 
-
     public ReviewController() {}
 
     /**
