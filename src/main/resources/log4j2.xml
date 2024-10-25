@@ -5,15 +5,21 @@
 		<!-- Logging to a file for debugging -->
 		<File name="FileLog" fileName="debug.log" append="false">
 			<PatternLayout
-				pattern="[%date{HH:mm:ss:SSS} @%line %t: %m%n">
+					pattern="[%date{HH:mm:ss:SSS} @%line %t: %m%n">
 			</PatternLayout>
 		</File>
+		<!-- Console output -->
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%m%n">
+			</PatternLayout>
+		</Console>
 	</Appenders>
 
 	<Loggers>
 		<!-- This is the configuration used by all other loggers. -->
 		<Root level="DEBUG">
 			<AppenderRef ref="FileLog" level="DEBUG"  />
+			<AppenderRef ref="Console" level="ERROR"  />
 		</Root>
 	</Loggers>
 </Configuration>
