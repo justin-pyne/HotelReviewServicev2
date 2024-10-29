@@ -35,8 +35,8 @@ public class ThreadSafeReviewController extends ReviewController{
      */
     @Override
     public String findReviews(String hotelId) {
+        lock.readLock().lock();
         try {
-            lock.readLock().lock();
             return super.findReviews(hotelId);
         } finally {
             lock.readLock().unlock();
@@ -50,8 +50,8 @@ public class ThreadSafeReviewController extends ReviewController{
      */
     @Override
     public String findWord(String word) {
-       try {
-           lock.readLock().lock();
+        lock.readLock().lock();
+        try {
            return super.findWord(word);
        } finally {
           lock.readLock().unlock();
