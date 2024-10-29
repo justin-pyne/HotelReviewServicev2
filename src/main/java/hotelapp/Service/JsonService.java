@@ -54,6 +54,8 @@ public class JsonService {
          */
         @Override
         public void run() {
+            logger.debug("Worker started working on: {}", file);
+
             List<Review> localReviews = new ArrayList<>();
 
             try(BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -150,7 +152,7 @@ public class JsonService {
                 } else if (path.toString().endsWith(".json")) {
                     phaser.register();
                     poolManager.submit(new ReviewWorker(path.toFile()));
-                    logger.debug("Created a worker for " + path);
+                    logger.debug("Added a worker to the queue for " + path);
                 }
             }
         } catch(IOException e) {
