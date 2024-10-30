@@ -10,8 +10,8 @@ import java.util.*;
  * A class that stores a reviewMap linking Reviews to Hotels, and an invertexIndex for word lookup in Reviews.
  */
 public class ReviewController {
-    private Map<String, List<Review>> reviewMap = new TreeMap<>();
-    private Map<String, TreeSet<ReviewWithFrequency>> invertedIndex = new HashMap<>();
+    private final Map<String, List<Review>> reviewMap = new TreeMap<>();
+    private final Map<String, TreeSet<ReviewWithFrequency>> invertedIndex = new HashMap<>();
 
     public ReviewController() {}
 

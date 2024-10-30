@@ -12,7 +12,7 @@ import java.util.TreeMap;
  * A class that stores a Map of Hotel objects, and provides methods to look up Hotels.
  */
 public class HotelController {
-    private Map<String, Hotel> hotelMap = new TreeMap<>();
+    private final Map<String, Hotel> hotelMap = new TreeMap<>();
 
     public HotelController(List<Hotel> hotels) {
         for (Hotel hotel : hotels) {

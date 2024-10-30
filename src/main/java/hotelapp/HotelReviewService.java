@@ -23,7 +23,7 @@ import java.util.Map;
  * and take instructor's / TA's feedback from a code review of project 1 into account.
  */
 public class HotelReviewService {
-    private ThreadSafeReviewController reviewController = new ThreadSafeReviewController();
+    private final ThreadSafeReviewController reviewController = new ThreadSafeReviewController();
     private HotelController hotelController;
     /**
      * Parse given arguments that contain paths to the hotel file and the reviews folder,

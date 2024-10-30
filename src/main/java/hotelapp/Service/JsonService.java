@@ -26,11 +26,11 @@ import java.util.concurrent.Phaser;
  * A class for parsing JSON input of Hotels and Reviews, and creating the appropriate Hotel and Review objects
  */
 public class JsonService {
-    private ExecutorService poolManager;
-    private Phaser phaser = new Phaser();
-    private JsonParser parser = new JsonParser();
-    private ThreadSafeReviewController reviewController;
-    private Logger logger = LogManager.getLogger();
+    private final ExecutorService poolManager;
+    private final Phaser phaser = new Phaser();
+    private final JsonParser parser = new JsonParser();
+    private final ThreadSafeReviewController reviewController;
+    private final Logger logger = LogManager.getLogger();
 
     public JsonService(int numThreads, ThreadSafeReviewController reviewController) {
         this.poolManager = Executors.newFixedThreadPool(numThreads);

@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * A thread safe version of the ReviewController
  */
 public class ThreadSafeReviewController extends ReviewController{
-    private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     public ThreadSafeReviewController() {}
 
