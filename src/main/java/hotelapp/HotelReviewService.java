@@ -5,6 +5,8 @@ import hotelapp.Controller.ThreadSafeReviewController;
 import hotelapp.Model.Hotel;
 import hotelapp.Service.JsonService;
 import hotelapp.Service.OutputService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +27,7 @@ import java.util.Map;
 public class HotelReviewService {
     private final ThreadSafeReviewController reviewController = new ThreadSafeReviewController();
     private HotelController hotelController;
+    private final Logger logger = LogManager.getLogger();
     /**
      * Parse given arguments that contain paths to the hotel file and the reviews folder,
      * and load hotel and review data into the corresponding data structures.
@@ -39,7 +42,7 @@ public class HotelReviewService {
         Map<String, String> argsMap = new HashMap<>();
 
         if (args.length == 0) {
-            System.out.println("Missing arguments.");
+            logger.error("Error: No arguments provided.");
             return;
         }
 
@@ -49,11 +52,11 @@ public class HotelReviewService {
                     argsMap.put(args[i], args[i + 1]);
                     i++;
                 } else {
-                    System.out.println("Unexpected or missing value for flag:" + args[i]);
+                    logger.error("Unexpected or missing value for flag:" + args[i]);
                     return;
                 }
             } else {
-                System.out.println("Unexpected argument: " + args[i]);
+                logger.error("Unexpected argument: " + args[i]);
                 return;
             }
         }

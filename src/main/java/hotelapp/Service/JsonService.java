@@ -85,7 +85,7 @@ public class JsonService {
                 logger.debug("Worker finished working and added reviews to controller.");
 
             } catch(IOException e) {
-                System.out.println(e);
+                logger.error("IOException: not able to open the Review file " + e);
             } finally {
                 phaser.arriveAndDeregister();
             }
@@ -123,7 +123,7 @@ public class JsonService {
                 hotels.add(hotel);
             }
         } catch (IOException e) {
-            System.out.println(e);
+            logger.error("IOException: not able to open the Hotel file " + e);
         }
         return hotels;
     }
