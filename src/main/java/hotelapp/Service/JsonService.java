@@ -42,7 +42,7 @@ public class JsonService {
      * and adds them to the appropriate maps.
      */
     class ReviewWorker implements Runnable {
-        private File file;
+        private final File file;
 
         public ReviewWorker(File file) {
             this.file = file;
